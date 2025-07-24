@@ -128,7 +128,7 @@ class MaskOpacity(Config):
         Mask opacity configuration with enable/disable options.
     """
     name: Literal["MaskOpacity"] = "MaskOpacity"
-    value: Union[MaskOpacityTrue, MaskOpacityFalse,Degree]
+    value: Union[MaskOpacityTrue, MaskOpacityFalse]
     type: Literal["object"] = "object"
     field: Literal["dependentdropdownlist"] = "dependentdropdownlist"
 
