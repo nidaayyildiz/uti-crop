@@ -104,7 +104,7 @@ class MaskOpacityFalse(Config):
 
 class MaskOpacityTrue(Config):
     name: Literal["True"] = "True"
-    value: int = Field(ge=0.0, le=1.0, default=0.5)
+    value: Literal[True] = True
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
 
