@@ -233,7 +233,7 @@ class DynamicCropInputs(Inputs):
 
 
 class DynamicCropConfigs(Configs):
-    maskOpacity: MaskOpacity
+    drawBBox: MaskOpacity
 
 
 class DynamicCropOutputs(Outputs):
