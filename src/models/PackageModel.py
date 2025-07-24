@@ -93,14 +93,6 @@ class HeightAbsolute(Config):
         title = "Crop Pixel Size  (Height)"
 
 
-class ImageHeight(Config):
-    name: Literal["imageHeight"] = "imageHeight"
-    value: int = Field(ge=1, default=480)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-
-    class Config:
-        title = "Image Height"
 
 class MaskOpacityFalse(Config):
     name: Literal["False"] = "False"
@@ -114,7 +106,6 @@ class MaskOpacityFalse(Config):
 
 class MaskOpacityTrue(Config):
     name: Literal["True"] = "True"
-    imageHeight: ImageHeight
     value: Literal[True] = True
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
