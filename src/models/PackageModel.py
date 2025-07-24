@@ -1,7 +1,7 @@
-
 from pydantic import Field, validator
 from typing import List, Optional, Union, Literal
-from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
+from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, \
+    Config
 
 
 class InputImage(Input):
@@ -23,7 +23,7 @@ class InputImage(Input):
 
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
-    value: Union[List[Image],Image]
+    value: Union[List[Image], Image]
     type: str = "object"
 
     @validator("type", pre=True, always=True)
@@ -37,12 +37,13 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
+
 class XCenterAbsolute(Config):
     """
          The starting point of the crop as the horizontal distance from the left side of the image (in pixels).
     """
     name: Literal["XCenterAbsolute"] = "XCenterAbsolute"
-    value: int = Field(ge=1, le=10000 ,default=50)
+    value: int = Field(ge=1, le=10000, default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
@@ -56,7 +57,7 @@ class YCenterAbsolute(Config):
          The starting point of the crop as the vertical distance from the top of the image (in pixels).
     """
     name: Literal["YCenterAbsolute"] = "YCenterAbsolute"
-    value: int = Field(ge=1, le=10000 ,default=50)
+    value: int = Field(ge=1, le=10000, default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
@@ -70,7 +71,7 @@ class WidthAbsolute(Config):
          The width of the region to be cropped (in pixels).
     """
     name: Literal["WidthAbsolute"] = "WidthAbsolute"
-    value: int = Field(ge=1, le=10000 ,default=50)
+    value: int = Field(ge=1, le=10000, default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
@@ -84,13 +85,28 @@ class HeightAbsolute(Config):
          The height of the region to be cropped (in pixels).
     """
     name: Literal["HeightAbsolute"] = "HeightAbsolute"
-    value: int = Field(ge=1, le=10000 ,default=50)
+    value: int = Field(ge=1, le=10000, default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
 
     class Config:
         title = "Crop Pixel Size  (Height)"
+
+
+class Degree(Config):
+    """
+        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
+    """
+    name: Literal["Degree"] = "Degree"
+    value: int = Field(ge=-359.0, le=359.0, default=0)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
+
+    class Config:
+        title = "Angle"
+
 
 class MaskOpacityFalse(Config):
     name: Literal["False"] = "False"
@@ -117,9 +133,9 @@ class MaskOpacity(Config):
         Mask opacity configuration with enable/disable options.
     """
     name: Literal["MaskOpacity"] = "MaskOpacity"
-    value: Union[MaskOpacityTrue, MaskOpacityFalse]
+    value: Union[MaskOpacityTrue, MaskOpacityFalse, Degree]
     type: Literal["object"] = "object"
-    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+    field: Literal["dependentdropdownlist"] = "dependentdropdownlist"
 
     class Config:
         title = "Mask Opacity"
@@ -130,7 +146,7 @@ class XCenterRelative(Config):
          Center X of the static crop (relative coordinate 0.0–1.0).
     """
     name: Literal["XCenterRelative"] = "XCenterRelative"
-    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    value: int = Field(ge=0.0, le=1.0, default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
@@ -144,7 +160,7 @@ class YCenterRelative(Config):
          Center Y of the static crop (relative coordinate 0.0–1.0).
     """
     name: Literal["YCenterRelative"] = "YCenterRelative"
-    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    value: int = Field(ge=0.0, le=1.0, default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
@@ -158,7 +174,7 @@ class WidthRelative(Config):
          Width of the static crop (relative value 0.0–1.0).
     """
     name: Literal["WidthRelative"] = "WidthRelative"
-    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    value: int = Field(ge=0.0, le=1.0, default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
@@ -172,14 +188,13 @@ class HeightRelative(Config):
          Height of the static crop (relative value 0.0–1.0).
     """
     name: Literal["HeightRelative"] = "HeightRelative"
-    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    value: int = Field(ge=0.0, le=1.0, default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
     placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
 
     class Config:
         title = "Crop Ratio (Height)"
-
 
 
 class AbsoluteCropInputs(Inputs):
@@ -191,7 +206,6 @@ class AbsoluteCropConfigs(Configs):
     yCenterAbsolute: YCenterAbsolute
     widthAbsolute: WidthAbsolute
     heightAbsolute: HeightAbsolute
-
 
 
 class AbsoluteCropOutputs(Outputs):
@@ -227,13 +241,12 @@ class AbsoluteCrop(Config):
         }
 
 
-
 class DynamicCropInputs(Inputs):
     inputImage: InputImage
 
 
 class DynamicCropConfigs(Configs):
-    drawBBox: MaskOpacity
+    maskOpacity: MaskOpacity
 
 
 class DynamicCropOutputs(Outputs):
@@ -267,8 +280,6 @@ class DynamicCrop(Config):
                 "value": 0
             }
         }
-
-
 
 
 class RelativeCropInputs(Inputs):
