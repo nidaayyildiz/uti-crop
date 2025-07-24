@@ -121,7 +121,7 @@ class MaskOpacity(Config):
     name: Literal["MaskOpacity"] = "MaskOpacity"
     value: Union[MaskOpacityTrue, MaskOpacityFalse]
     type: Literal["object"] = "object"
-    field: Literal["dependentdropdownlist"] = "dependentdropdownlist"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Mask Opacity"
