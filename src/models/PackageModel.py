@@ -37,8 +37,62 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
+class XCenterAbsolute(Config):
+    """
+         The starting point of the crop as the horizontal distance from the left side of the image (in pixels).
+    """
+    name: Literal["XCenterAbsolute"] = "XCenterAbsolute"
+    value: int = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
 
-class KeepSideFalse(Config):
+    class Config:
+        title = "Crop Pixel Size (X - Center)"
+
+
+class YCenterAbsolute(Config):
+    """
+         The starting point of the crop as the vertical distance from the top of the image (in pixels).
+    """
+    name: Literal["YCenterAbsolute"] = "YCenterAbsolute"
+    value: int = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size (Y - Center)"
+
+
+class WidthAbsolute(Config):
+    """
+         The width of the region to be cropped (in pixels).
+    """
+    name: Literal["WidthAbsolute"] = "HeightAbsolute"
+    value: int = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size (Width)"
+
+
+class HeightAbsolute(Config):
+    """
+         The height of the region to be cropped (in pixels).
+    """
+    name: Literal["HeightAbsolute"] = "HeightAbsolute"
+    value: int = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size  (Height)"
+
+class MaskOpacityFalse(Config):
     name: Literal["False"] = "False"
     value: Literal[False] = False
     type: Literal["bool"] = "bool"
@@ -48,9 +102,9 @@ class KeepSideFalse(Config):
         title = "Disable"
 
 
-class KeepSideTrue(Config):
+class MaskOpacityTrue(Config):
     name: Literal["True"] = "True"
-    value: Literal[True] = True
+    value: int = Field(ge=0.0, le=1.0, default=0.5)
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
 
@@ -58,49 +112,95 @@ class KeepSideTrue(Config):
         title = "Enable"
 
 
-class KeepSideBBox(Config):
+class MaskOpacity(Config):
     """
-        Rotate image without catting off sides.
+        Mask opacity configuration with enable/disable options.
     """
-    name: Literal["KeepSide"] = "KeepSide"
-    value: Union[KeepSideTrue, KeepSideFalse]
+    name: Literal["MaskOpacity"] = "MaskOpacity"
+    value: Union[MaskOpacityTrue, MaskOpacityFalse]
     type: Literal["object"] = "object"
-    field: Literal["dropdownlist"] = "dropdownlist"
+    field: Literal["dependentdropdownlist"] = "dependentdropdownlist"
 
     class Config:
-        title = "Keep Sides"
+        title = "Mask Opacity"
 
 
-class Degree(Config):
+class XCenterRelative(Config):
     """
-        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
+         Center X of the static crop (relative coordinate 0.0–1.0).
     """
-    name: Literal["Degree"] = "Degree"
-    value: int = Field(ge=-359.0, le=359.0,default=0)
+    name: Literal["XCenterRelative"] = "XCenterRelative"
+    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
 
     class Config:
-        title = "Angle"
+        title = "Crop Ratio (YCenter)"
 
 
-class PackageInputs(Inputs):
+class YCenterRelative(Config):
+    """
+         Center Y of the static crop (relative coordinate 0.0–1.0).
+    """
+    name: Literal["YCenterRelative"] = "YCenterRelative"
+    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
+
+    class Config:
+        title = "Crop Ratio (YCenter)"
+
+
+class WidthRelative(Config):
+    """
+         Width of the static crop (relative value 0.0–1.0).
+    """
+    name: Literal["WidthRelative"] = "WidthRelative"
+    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
+
+    class Config:
+        title = "Crop Ratio (Width)"
+
+
+class HeightRelative(Config):
+    """
+         Height of the static crop (relative value 0.0–1.0).
+    """
+    name: Literal["HeightRelative"] = "HeightRelative"
+    value: int = Field(ge=0.0, le=1.0 ,default=0.5)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
+
+    class Config:
+        title = "Crop Ratio (Height)"
+
+
+
+class AbsoluteCropInputs(Inputs):
     inputImage: InputImage
 
 
-class PackageConfigs(Configs):
-    degree: Degree
-    drawBBox: KeepSideBBox
+class AbsoluteCropConfigs(Configs):
+    xCenterAbsolute: XCenterAbsolute
+    yCenterAbsolute: YCenterAbsolute
+    widthAbsolute: WidthAbsolute
+    heightAbsolute: HeightAbsolute
 
 
-class PackageOutputs(Outputs):
+
+class AbsoluteCropOutputs(Outputs):
     outputImage: OutputImage
 
 
-class PackageRequest(Request):
-    inputs: Optional[PackageInputs]
-    configs: PackageConfigs
+class AbsoluteCropRequest(Request):
+    inputs: Optional[AbsoluteCropInputs]
+    configs: AbsoluteCropConfigs
 
     class Config:
         json_schema_extra = {
@@ -108,18 +208,106 @@ class PackageRequest(Request):
         }
 
 
-class PackageResponse(Response):
-    outputs: PackageOutputs
+class AbsoluteCropResponse(Response):
+    outputs: AbsoluteCropOutputs
 
 
-class PackageExecutor(Config):
-    name: Literal["Package"] = "Package"
-    value: Union[PackageRequest, PackageResponse]
+class AbsoluteCrop(Config):
+    name: Literal["AbsoluteCrop"] = "AbsoluteCrop"
+    value: Union[AbsoluteCropRequest, AbsoluteCropResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
     class Config:
-        title = "Package"
+        title = "AbsoluteCrop"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
+
+
+class DynamicCropInputs(Inputs):
+    inputImage: InputImage
+
+
+class DynamicCropConfigs(Configs):
+    maskOpacity: MaskOpacity
+
+
+class DynamicCropOutputs(Outputs):
+    outputImage: OutputImage
+
+
+class DynamicCropRequest(Request):
+    inputs: Optional[DynamicCropInputs]
+    configs: DynamicCropConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+
+class DynamicCropResponse(Response):
+    outputs: DynamicCropOutputs
+
+
+class DynamicCrop(Config):
+    name: Literal["DynamicCrop"] = "DynamicCrop"
+    value: Union[DynamicCropRequest, DynamicCropResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "DynamicCrop"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
+
+
+
+class RelativeCropInputs(Inputs):
+    inputImage: InputImage
+
+
+class RelativeCropConfigs(Configs):
+    xCenterRelative: XCenterRelative
+    yCenterRelative: YCenterRelative
+    widthRelative: WidthRelative
+    heightRelative: HeightRelative
+
+
+class RelativeCropOutputs(Outputs):
+    outputImage: OutputImage
+
+
+class RelativeCropRequest(Request):
+    inputs: Optional[RelativeCropInputs]
+    configs: RelativeCropConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+
+class RelativeCropResponse(Response):
+    outputs: RelativeCropOutputs
+
+
+class RelativeCrop(Config):
+    name: Literal["RelativeCrop"] = "RelativeCrop"
+    value: Union[RelativeCropRequest, RelativeCropResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "RelativeCrop"
         json_schema_extra = {
             "target": {
                 "value": 0
@@ -129,7 +317,7 @@ class PackageExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[PackageExecutor]
+    value: Union[AbsoluteCrop, DynamicCrop, RelativeCrop]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
