@@ -93,19 +93,14 @@ class HeightAbsolute(Config):
         title = "Crop Pixel Size  (Height)"
 
 
-class Degree(Config):
-    """
-        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
-    """
-    name: Literal["Degree"] = "Degree"
-    value: int = Field(ge=-359.0, le=359.0, default=0)
+class ImageHeight(Config):
+    name: Literal["imageHeight"] = "imageHeight"
+    value: int = Field(ge=1, default=480)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
 
     class Config:
-        title = "Angle"
-
+        title = "Image Height"
 
 class MaskOpacityFalse(Config):
     name: Literal["False"] = "False"
@@ -119,7 +114,7 @@ class MaskOpacityFalse(Config):
 
 class MaskOpacityTrue(Config):
     name: Literal["True"] = "True"
-    degree: Degree
+    imageHeight: ImageHeight
     value: Literal[True] = True
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
