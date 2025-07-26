@@ -19,24 +19,25 @@ class AbsoluteCrop(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.XCenterAbsolute = self.request.get_param("XCenterAbsolute")
-        self.YCenterAbsolute = self.request.get_param("YCenterAbsolute")
-        self.WidthAbsolute = self.request.get_param("WidthAbsolute")
-        self.HeightAbsolute = self.request.get_param("HeightAbsolute")
+        self.xCenterAbsolute = self.request.get_param("XCenterAbsolute")
+        self.yCenterAbsolute = self.request.get_param("YCenterAbsolute")
+        self.widthAbsolute = self.request.get_param("WidthAbsolute")
+        self.heightAbsolute = self.request.get_param("HeightAbsolute")
         self.image = self.request.get_param("inputImage")
 
     @staticmethod
     def bootstrap(config: dict) -> dict:
         return {}
 
-    def absolute_static_crop( img: Image, x_center: float, y_center: float,width: float, height: float,):
-        x_min = round(x_center - width / 2)
-        y_min = round(y_center - height / 2)
-        x_max = round(x_min + width)
-        y_max = round(y_min + height)
-        cropped_image = img.numpy_image[y_min:y_max, x_min:x_max]
+    def absolute_static_crop( self, img):
+        x_min = round(self.xCenterAbsolute - self.widthAbsolute / 2)
+        y_min = round(self.yCenterAbsolute - self.heightAbsolute / 2)
+        x_max = round(x_min + self.widthAbsolute)
+        y_max = round(y_min + self.heightAbsolute)
+        cropped_image = img[y_min:y_max, x_min:x_max]
         if not cropped_image.size:
             return None
+        return cropped_image
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
