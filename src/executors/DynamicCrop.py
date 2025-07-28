@@ -28,7 +28,7 @@ class DynamicCrop(Component):
         return {}
 
     def dynamic_crop(self, img, detections):
-        cropped_images = []
+        cropped_img = []
 
         for det in detections:
             x_min = int(det["left"])
@@ -38,9 +38,9 @@ class DynamicCrop(Component):
 
             cropped = img[y_min:y_max, x_min:x_max]
             if cropped.size:
-                cropped_images.append(cropped)
+                cropped_img.append(cropped)
 
-        return cropped_images
+        return cropped_img
 
 
 
