@@ -19,22 +19,28 @@ class DynamicCrop(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.rotation_degree = self.request.get_param("Degree")
-        self.keep_side = self.request.get_param("KeepSide")
+        self.mask_Opacity = self.request.get_param("MaskOpacity")
         self.image = self.request.get_param("inputImage")
+        self.detections = self.request.get_param("outputDetections")
 
     @staticmethod
     def bootstrap(config: dict) -> dict:
         return {}
 
-    def dynamic_crop(img, detections):
-        crops = []
+    def dynamic_crop(self, img, detections):
+        cropped_images = []
+
         for det in detections:
-            x1, y1, x2, y2 = map(int, det['bbox'])
-            cropped = img[y1:y2, x1:x2]
-            if cropped.size > 0:
-                crops.append(cropped)
-        return crops
+            x_min = int(det["left"])
+            y_min = int(det["top"])
+            x_max = int(x_min + det["width"])
+            y_max = int(y_min + det["height"])
+
+            cropped = img[y_min:y_max, x_min:x_max]
+            if cropped.size:
+                cropped_images.append(cropped)
+
+        return cropped_images
 
 
 
