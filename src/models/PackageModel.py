@@ -41,7 +41,7 @@ class XCenterAbsolute(Config):
     """
          The starting point of the crop as the horizontal distance from the left side of the image (in pixels).
     """
-    name: Literal["XCenterAbsolute"] = "XCenterAbsolute"
+    name: Literal["xCenterAbsolute"] = "xCenterAbsolute"
     value: float = Field(ge=1, le=10000 ,default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -55,7 +55,7 @@ class YCenterAbsolute(Config):
     """
          The starting point of the crop as the vertical distance from the top of the image (in pixels).
     """
-    name: Literal["YCenterAbsolute"] = "YCenterAbsolute"
+    name: Literal["yCenterAbsolute"] = "yCenterAbsolute"
     value: float = Field(ge=1, le=10000 ,default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -69,7 +69,7 @@ class WidthAbsolute(Config):
     """
          The width of the region to be cropped (in pixels).
     """
-    name: Literal["WidthAbsolute"] = "WidthAbsolute"
+    name: Literal["widthAbsolute"] = "widthAbsolute"
     value: float = Field(ge=1, le=10000 ,default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -83,7 +83,7 @@ class HeightAbsolute(Config):
     """
          The height of the region to be cropped (in pixels).
     """
-    name: Literal["HeightAbsolute"] = "HeightAbsolute"
+    name: Literal["heightAbsolute"] = "heightAbsolute"
     value: float = Field(ge=1, le=10000 ,default=50)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -96,7 +96,7 @@ class MaskValue(Config):
     """
             Determines how much of the area outside the mask will be removed. 1.0 means fully removed, 0.0 means no removal. Use a value between 0.0 < mask value < 1.0 for partial transparency.
     """
-    name: Literal["MaskValue"] = "MaskValue"
+    name: Literal["maskValue"] = "maskValue"
     value: float = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -129,7 +129,7 @@ class MaskOpacity(Config):
     """
         Mask opacity configuration with enable/disable options.
     """
-    name: Literal["MaskOpacity"] = "MaskOpacity"
+    name: Literal["maskOpacity"] = "maskOpacity"
     value: Union[MaskOpacityTrue, MaskOpacityFalse]
     type: Literal["object"] = "object"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
@@ -142,7 +142,7 @@ class XCenterRelative(Config):
     """
          Center X of the static crop (relative coordinate 0.0–1.0).
     """
-    name: Literal["XCenterRelative"] = "XCenterRelative"
+    name: Literal["xCenterRelative"] = "xCenterRelative"
     value: float = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -156,7 +156,7 @@ class YCenterRelative(Config):
     """
          Center Y of the static crop (relative coordinate 0.0–1.0).
     """
-    name: Literal["YCenterRelative"] = "YCenterRelative"
+    name: Literal["yCenterRelative"] = "yCenterRelative"
     value: float = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -170,7 +170,7 @@ class WidthRelative(Config):
     """
          Width of the static crop (relative value 0.0–1.0).
     """
-    name: Literal["WidthRelative"] = "WidthRelative"
+    name: Literal["widthRelative"] = "widthRelative"
     value: float = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
@@ -184,7 +184,7 @@ class HeightRelative(Config):
     """
          Height of the static crop (relative value 0.0–1.0).
     """
-    name: Literal["HeightRelative"] = "HeightRelative"
+    name: Literal["heightRelative"] = "heightRelative"
     value: float = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
