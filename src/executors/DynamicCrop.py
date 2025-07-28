@@ -46,7 +46,7 @@ class DynamicCrop(Component):
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
-        img.value = self.dynamic_crop(img.value)
+        img.value = self.dynamic_crop(img.value, self.detection)
         self.image = Image.set_frame(img=img, package_uID=self.uID, redis_db=self.redis_db)
         packageModel = build_response_DynamicCrop(context=self)
         return packageModel
