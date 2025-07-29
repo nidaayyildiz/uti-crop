@@ -19,22 +19,7 @@ class InputImage(Input):
 
     class Config:
         title = "Image"
-        
-class InputDetection(Input):
-    name: Literal["inputDetection"] = "inputDetection"
-    value: Union[List[Image], Image]
-    type: str = "object"
 
-    @validator("type", pre=True, always=True)
-    def set_type_based_on_value(cls, value, values):
-        value = values.get('value')
-        if isinstance(value, Image):
-            return "object"
-        elif isinstance(value, list):
-            return "list"
-
-    class Config:
-        title = "Detections"
 
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
@@ -258,7 +243,6 @@ class AbsoluteCrop(Config):
 
 class DynamicCropInputs(Inputs):
     inputImage: InputImage
-    inputDetections: InputDetections
 
 
 class DynamicCropConfigs(Configs):
