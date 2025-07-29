@@ -1,7 +1,7 @@
 
 from pydantic import Field, validator
 from typing import List, Optional, Union, Literal
-from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
+from sdks.novavision.src.base.model import Package,Detection, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
 
 
 class InputImage(Input):
@@ -21,15 +21,10 @@ class InputImage(Input):
         title = "Image"
 
 
-class Detection(Detection):
-    confidence: Optional[float] =""
-    classLabel: Optional[str] =""
-    classId: Optional[int] =""
-
-class Detections(Input):
-    name: Literal["Detections"] = "Detections"
+class InputDetections(Input):
+    name: Literal["inputDetections"] = "inputDetections"
     value: List[Detection]
-    type: Literal["list"] = "list"
+    type: str = "list"
 
     class Config:
         title = "Detections"
@@ -256,7 +251,7 @@ class AbsoluteCrop(Config):
 
 class DynamicCropInputs(Inputs):
     inputImage: InputImage
-    detections: Detections
+    inputDetections: InputDetections
 
 
 class DynamicCropConfigs(Configs):
