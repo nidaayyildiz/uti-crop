@@ -214,7 +214,6 @@ class AbsoluteCropConfigs(Configs):
     heightAbsolute: HeightAbsolute
 
 
-
 class AbsoluteCropOutputs(Outputs):
     outputImage: OutputImage
 
@@ -233,7 +232,7 @@ class AbsoluteCropResponse(Response):
     outputs: AbsoluteCropOutputs
 
 
-class AbsoluteCrop(Config):
+class AbsoluteCropExecutor(Config):
     name: Literal["AbsoluteCrop"] = "AbsoluteCrop"
     value: Union[AbsoluteCropRequest, AbsoluteCropResponse]
     type: Literal["object"] = "object"
@@ -276,7 +275,7 @@ class DynamicCropResponse(Response):
     outputs: DynamicCropOutputs
 
 
-class DynamicCrop(Config):
+class DynamicCropExecutor(Config):
     name: Literal["DynamicCrop"] = "DynamicCrop"
     value: Union[DynamicCropRequest, DynamicCropResponse]
     type: Literal["object"] = "object"
@@ -322,7 +321,7 @@ class RelativeCropResponse(Response):
     outputs: RelativeCropOutputs
 
 
-class RelativeCrop(Config):
+class RelativeCropExecutor(Config):
     name: Literal["RelativeCrop"] = "RelativeCrop"
     value: Union[RelativeCropRequest, RelativeCropResponse]
     type: Literal["object"] = "object"
@@ -339,7 +338,7 @@ class RelativeCrop(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[AbsoluteCrop, DynamicCrop, RelativeCrop]
+    value: Union[AbsoluteCropExecutor, DynamicCropExecutor, RelativeCropExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
