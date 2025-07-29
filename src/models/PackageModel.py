@@ -260,6 +260,7 @@ class AbsoluteCrop(Config):
 
 class DynamicCropInputs(Inputs):
     inputImage: InputImage
+    inputDetections: InputDetections
 
 
 class DynamicCropConfigs(Configs):
