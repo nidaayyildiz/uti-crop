@@ -21,35 +21,40 @@ class DynamicCrop(Component):
         self.request.model = PackageModel(**(self.request.data))
         self.mask_Opacity = self.request.get_param("MaskOpacity")
         self.image = self.request.get_param("inputImage")
+        self.detections = self.request.get_param("inputDetections")
 
     @staticmethod
     def bootstrap(config: dict) -> dict:
         return {}
 
-    def dynamic_crop(self, img, detections):
-        cropped_img = []
+    def crop_detections(self, image):
+        if isinstance(image, list):
+            image = image[0]
 
-        for det in detections:
-            x_min = int(det["left"])
-            y_min = int(det["top"])
-            x_max = int(x_min + det["width"])
-            y_max = int(y_min + det["height"])
+        last_crop = None
 
-            cropped = img[y_min:y_max, x_min:x_max]
-            if cropped.size:
-                cropped_img.append(cropped)
+        for det in self.detections:
+            bbox = det.get('boundingBox', {})
+            top = int(bbox.get('top', 0))
+            left = int(bbox.get('left', 0))
+            height = int(bbox.get('height', 0))
+            width = int(bbox.get('width', 0))
 
-        return cropped_img
+            y1, y2 = max(0, top), min(image.shape[0], top + height)
+            x1, x2 = max(0, left), min(image.shape[1], left + width)
 
+            cropped = image[y1:y2, x1:x2]
+            last_crop = cropped
+
+        return last_crop
 
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
-        img.value = self.dynamic_crop(img.value, self.detection)
-        self.image = Image.set_frame(img=img, package_uID=self.uID, redis_db=self.redis_db)
+        img.value = self.crop_detections(img.value)
+        self.image = Image.set_frame(img=img, package_uID=self.request.model.uID, redis_db=self.redis_db)
         packageModel = build_response_DynamicCrop(context=self)
         return packageModel
-
 
 if "__main__" == __name__:
     Executor(sys.argv[1]).run()
