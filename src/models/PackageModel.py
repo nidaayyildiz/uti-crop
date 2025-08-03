@@ -100,19 +100,7 @@ class HeightAbsolute(Config):
     class Config:
         title = "Crop Pixel Size  (Height)"
 
-class MaskValue(Config):
-    """
-            Determines how much of the area outside the mask will be removed. 1.0 means fully removed, 0.0 means no removal. Use a value between 0.0 < mask value < 1.0 for partial transparency.
-    """
-    name: Literal["maskValue"] = "maskValue"
-    value: float = Field(ge=0.0, le=1.0 ,default=0.5)
-    type: Literal["number"] = "number"
-    field: Literal["textInput"] = "textInput"
-
-    class Config:
-        title = "Mask Value"
-
-class MaskOpacityFalse(Config):
+class KeepSideFalse(Config):
     name: Literal["False"] = "False"
     value: Literal[False] = False
     type: Literal["bool"] = "bool"
@@ -122,9 +110,8 @@ class MaskOpacityFalse(Config):
         title = "Disable"
 
 
-class MaskOpacityTrue(Config):
+class KeepSideTrue(Config):
     name: Literal["True"] = "True"
-    maskValue: MaskValue
     value: Literal[True] = True
     type: Literal["bool"] = "bool"
     field: Literal["option"] = "option"
@@ -133,17 +120,17 @@ class MaskOpacityTrue(Config):
         title = "Enable"
 
 
-class MaskOpacity(Config):
+class KeepSideBBox(Config):
     """
-        Mask opacity configuration with enable/disable options.
+        Rotate image without catting off sides.
     """
-    name: Literal["maskOpacity"] = "maskOpacity"
-    value: Union[MaskOpacityTrue, MaskOpacityFalse]
+    name: Literal["KeepSide"] = "KeepSide"
+    value: Union[KeepSideTrue, KeepSideFalse]
     type: Literal["object"] = "object"
-    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+    field: Literal["dropdownlist"] = "dropdownlist"
 
     class Config:
-        title = "Mask Opacity"
+        title = "Keep Sides"
 
 
 class XCenterRelative(Config):
@@ -254,7 +241,7 @@ class DynamicCropInputs(Inputs):
 
 
 class DynamicCropConfigs(Configs):
-    maskOpacity: MaskOpacity
+    drawBBox: KeepSideBBox
 
 
 class DynamicCropOutputs(Outputs):
