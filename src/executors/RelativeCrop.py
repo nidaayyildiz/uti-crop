@@ -48,7 +48,7 @@ class RelativeCrop(Component):
             if not cropped_image.size:
                 return None
         except TypeError as e:
-            logger.info("x_center value >= width / 2 value or y_center value >= height / 2 value")
+            logger.info("x_center value > width / 2 value or y_center value >  height / 2 value")
             logger.error(f"Error in cropping: {e}")
             return img
         return cropped_image
