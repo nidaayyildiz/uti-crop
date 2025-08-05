@@ -19,10 +19,10 @@ class AbsoluteCrop(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.xCenterAbsolute = self.request.get_param("XCenterAbsolute")
-        self.yCenterAbsolute = self.request.get_param("YCenterAbsolute")
-        self.widthAbsolute = self.request.get_param("WidthAbsolute")
-        self.heightAbsolute = self.request.get_param("HeightAbsolute")
+        self.xCenterAbsolute = self.request.get_param("xCenterAbsolute")
+        self.yCenterAbsolute = self.request.get_param("yCenterAbsolute")
+        self.widthAbsolute = self.request.get_param("widthAbsolute")
+        self.heightAbsolute = self.request.get_param("heightAbsolute")
         self.image = self.request.get_param("inputImage")
 
     @staticmethod
