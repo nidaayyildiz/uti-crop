@@ -30,10 +30,10 @@ class AbsoluteCrop(Component):
         return {}
 
     def absolute_static_crop( self, img):
-        x_min = round(self.xCenterAbsolute - self.widthAbsolute / 2)
-        y_min = round(self.yCenterAbsolute - self.heightAbsolute / 2)
-        x_max = round(x_min + self.widthAbsolute)
-        y_max = round(y_min + self.heightAbsolute)
+        x_min = int(self.xCenterAbsolute - self.widthAbsolute / 2)
+        y_min = int(self.yCenterAbsolute - self.heightAbsolute / 2)
+        x_max = int(x_min + self.widthAbsolute)
+        y_max = int(y_min + self.heightAbsolute)
         cropped_image = img[y_min:y_max, x_min:x_max]
         if not cropped_image.size:
             return None
