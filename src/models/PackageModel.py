@@ -122,7 +122,7 @@ class KeepSideTrue(Config):
 
 class KeepSideBBox(Config):
     """
-        Rotate image without catting off sides.
+        Do you want to enable the executor?
     """
     name: Literal["KeepSide"] = "KeepSide"
     value: Union[KeepSideTrue, KeepSideFalse]
@@ -130,7 +130,7 @@ class KeepSideBBox(Config):
     field: Literal["dropdownlist"] = "dropdownlist"
 
     class Config:
-        title = "Keep Sides"
+        title = "Enabled"
 
 
 class XCenterRelative(Config):
