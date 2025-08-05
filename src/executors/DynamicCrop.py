@@ -5,6 +5,7 @@
 import os
 import cv2
 import sys
+import copy
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../../../'))
 
@@ -28,10 +29,8 @@ class DynamicCrop(Component):
         return {}
 
     def crop_detections(self, image):
-        if isinstance(image, list):
-            image = image[0]
-
-        last_crop = None
+        images = []
+        frame = image.value
 
         for det in self.detections:
             bbox = det.get('boundingBox', {})
@@ -40,20 +39,36 @@ class DynamicCrop(Component):
             height = int(bbox.get('height', 0))
             width = int(bbox.get('width', 0))
 
-            y1, y2 = max(0, top), min(image.shape[0], top + height)
-            x1, x2 = max(0, left), min(image.shape[1], left + width)
+            y1 = max(0, top)
+            y2 = min(frame.shape[0], top + height)
+            x1 = max(0, left)
+            x2 = min(frame.shape[1], left + width)
 
-            cropped = image[y1:y2, x1:x2]
-            last_crop = cropped
+            cropped_frame = frame[y1:y2, x1:x2]
 
-        return last_crop
+            cropped_image = copy.deepcopy(image)
+            cropped_image.value = cropped_frame
 
+            saved_image = Image.set_frame(img=cropped_image, package_uID=self.request.model.uID, redis_db=self.redis_db)
+            images.append(saved_image)
 
+        return images
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
-        img.value = self.crop_detections(img.value)
-        self.image = Image.set_frame(img=img, package_uID=self.request.model.uID, redis_db=self.redis_db)
+        cropped_images = self.crop_detections(img)
+
+        # Eğer hiç detection yoksa, orijinal görüntüyü döndür
+        if not cropped_images:
+            cropped_images = [img]
+
+        # Tek görüntü varsa liste olarak döndür
+        if len(cropped_images) == 1:
+            self.image = cropped_images[0]
+        else:
+            self.image = cropped_images
+
+        self.request.model.inputImage = self.image
         packageModel = build_response_DynamicCrop(context=self)
         return packageModel
 
