@@ -33,15 +33,15 @@ class RelativeCrop(Component):
 
     def relative_static_crop(self, img):
         try:
-            x_center = round(img.shape[1] * self.xCenterRelative)
-            y_center = round(img.shape[0] * self.yCenterRelative)
-            width = round(img.shape[1] * self.widthRelative)
-            height = round(img.shape[0] * self.heightRelative)
+            x_center = int(img.shape[1] * self.xCenterRelative)
+            y_center = int(img.shape[0] * self.yCenterRelative)
+            width = int(img.shape[1] * self.widthRelative)
+            height = int(img.shape[0] * self.heightRelative)
 
-            x_min = round(x_center - (width / 2))
-            y_min = round(y_center - (height / 2))
-            x_max = round(x_min + width)
-            y_max = round(y_min + height)
+            x_min = int(x_center - (width / 2))
+            y_min = int(y_center - (height / 2))
+            x_max = int(x_min + width)
+            y_max = int(y_min + height)
 
             cropped_image = img[y_min:y_max, x_min:x_max]
 
