@@ -30,14 +30,20 @@ class AbsoluteCrop(Component):
         return {}
 
     def absolute_static_crop( self, img):
-        x_min = int(self.xCenterAbsolute - self.widthAbsolute / 2)
-        y_min = int(self.yCenterAbsolute - self.heightAbsolute / 2)
-        x_max = int(x_min + self.widthAbsolute)
-        y_max = int(y_min + self.heightAbsolute)
-        cropped_image = img[y_min:y_max, x_min:x_max]
-        if not cropped_image.size:
-            return None
+        try:
+            x_min = int(self.xCenterAbsolute - self.widthAbsolute / 2)
+            y_min = int(self.yCenterAbsolute - self.heightAbsolute / 2)
+            x_max = int(x_min + self.widthAbsolute)
+            y_max = int(y_min + self.heightAbsolute)
+            cropped_image = img[y_min:y_max, x_min:x_max]
+            if not cropped_image.size:
+                return None
+        except TypeError as e:
+            logger.info("x_center value > width / 2 value or y_center value >  height / 2 value")
+            logger.error(f"Error in cropping: {e}")
+            return img
         return cropped_image
+
 
     def run(self):
         img = Image.get_frame(img=self.image, redis_db=self.redis_db)
