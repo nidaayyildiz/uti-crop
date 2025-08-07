@@ -13,6 +13,9 @@ from sdks.novavision.src.base.component import Component
 from sdks.novavision.src.helper.executor import Executor
 from components.Crop.src.utils.response import build_response_AbsoluteCrop
 from components.Crop.src.models.PackageModel import PackageModel
+from sdks.novavision.src.base.logger import LoggerManager
+
+logger = LoggerManager()
 
 
 class AbsoluteCrop(Component):
