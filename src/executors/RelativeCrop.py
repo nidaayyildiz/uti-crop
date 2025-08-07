@@ -33,17 +33,22 @@ class RelativeCrop(Component):
 
     def relative_static_crop(self, img):
         try:
+            if None in [self.xCenterRelative, self.yCenterRelative, self.widthRelative, self.heightRelative]:
+                logger.error(
+                    "One or more crop parameters are None. xCenterRelative: {}, yCenterRelative: {}, widthRelative: {}, heightRelative: {}".format(
+                        self.xCenterRelative, self.yCenterRelative, self.widthRelative, self.heightRelative))
+                return img
             x_center = float(img.shape[1] * self.xCenterRelative)
             y_center = float(img.shape[0] * self.yCenterRelative)
             width = float(img.shape[1] * self.widthRelative)
             height = float(img.shape[0] * self.heightRelative)
 
-            x_min = float(x_center - (width / 2))
-            y_min = float(y_center - (height / 2))
-            x_max = float(x_min + width)
-            y_max = float(y_min + height)
+            x_min = int(x_center - (width / 2))
+            y_min = int(y_center - (height / 2))
+            x_max = int(x_min + width)
+            y_max = int(y_min + height)
 
-            cropped_image = img[y_min:y_max, x_min:x_max]
+            cropped_image = img[int(y_min):int(y_max), int(x_min):int(x_max)]
 
             if not cropped_image.size:
                 return None
