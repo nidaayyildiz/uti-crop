@@ -21,10 +21,10 @@ class RelativeCrop(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.xCenterRelative = self.request.get_param("XCenterRelative")
-        self.yCenterRelative = self.request.get_param("YCenterRelative")
-        self.widthRelative = self.request.get_param("WidthRelative")
-        self.heightRelative = self.request.get_param("HeightRelative")
+        self.xCenterRelative = self.request.get_param("xCenterRelative")
+        self.yCenterRelative = self.request.get_param("yCenterRelative")
+        self.widthRelative = self.request.get_param("widthRelative")
+        self.heightRelative = self.request.get_param("heightRelative")
         self.image = self.request.get_param("inputImage")
 
     @staticmethod
