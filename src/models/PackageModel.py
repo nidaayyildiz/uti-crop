@@ -1,7 +1,7 @@
 
 from pydantic import Field, validator
 from typing import List, Optional, Union, Literal
-from sdks.novavision.src.base.model import Package, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
+from sdks.novavision.src.base.model import Package,Detection, Image, Inputs, Configs, Outputs, Response, Request, Output, Input, Config
 
 
 class InputImage(Input):
@@ -21,6 +21,14 @@ class InputImage(Input):
         title = "Image"
 
 
+class InputDetections(Input):
+    name: Literal["inputDetections"] = "inputDetections"
+    value: List[Detection]
+    type: str = "list"
+
+    class Config:
+        title = "Detections"
+
 class OutputImage(Output):
     name: Literal["outputImage"] = "outputImage"
     value: Union[List[Image],Image]
@@ -37,6 +45,60 @@ class OutputImage(Output):
     class Config:
         title = "Image"
 
+class XCenterAbsolute(Config):
+    """
+         The starting point of the crop as the horizontal distance from the left side of the image (in pixels).
+    """
+    name: Literal["xCenterAbsolute"] = "xCenterAbsolute"
+    value: float = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size (X - Center)"
+
+
+class YCenterAbsolute(Config):
+    """
+         The starting point of the crop as the vertical distance from the top of the image (in pixels).
+    """
+    name: Literal["yCenterAbsolute"] = "yCenterAbsolute"
+    value: float = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size (Y - Center)"
+
+
+class WidthAbsolute(Config):
+    """
+         The width of the region to be cropped (in pixels).
+    """
+    name: Literal["widthAbsolute"] = "widthAbsolute"
+    value: float = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size (Width)"
+
+
+class HeightAbsolute(Config):
+    """
+         The height of the region to be cropped (in pixels).
+    """
+    name: Literal["heightAbsolute"] = "heightAbsolute"
+    value: float = Field(ge=1, le=10000 ,default=50)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[1, 10000]"] = "[1, 10000]"
+
+    class Config:
+        title = "Crop Pixel Size  (Height)"
 
 class KeepSideFalse(Config):
     name: Literal["False"] = "False"
@@ -60,7 +122,7 @@ class KeepSideTrue(Config):
 
 class KeepSideBBox(Config):
     """
-        Rotate image without catting off sides.
+        Do you want to enable the executor?
     """
     name: Literal["KeepSide"] = "KeepSide"
     value: Union[KeepSideTrue, KeepSideFalse]
@@ -68,39 +130,84 @@ class KeepSideBBox(Config):
     field: Literal["dropdownlist"] = "dropdownlist"
 
     class Config:
-        title = "Keep Sides"
+        title = "Enabled"
 
 
-class Degree(Config):
+class XCenterRelative(Config):
     """
-        Positive angles specify counterclockwise rotation while negative angles indicate clockwise rotation.
+         Center X of the static crop (relative coordinate 0.0–1.0).
     """
-    name: Literal["Degree"] = "Degree"
-    value: int = Field(ge=-359.0, le=359.0,default=0)
+    name: Literal["xCenterRelative"] = "xCenterRelative"
+    value: float = Field(ge=0.0, le=1.0 ,default=0.5)
     type: Literal["number"] = "number"
     field: Literal["textInput"] = "textInput"
-    placeHolder: Literal["[-359, 359]"] = "[-359, 359]"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
 
     class Config:
-        title = "Angle"
+        title = "Crop Ratio (X - Center)"
 
 
-class PackageInputs(Inputs):
+class YCenterRelative(Config):
+    """
+         Center Y of the static crop (relative coordinate 0.0–1.0).
+    """
+    name: Literal["yCenterRelative"] = "yCenterRelative"
+    value: float = Field(ge=0.0, le=1.0 ,default=0.5)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
+
+    class Config:
+        title = "Crop Ratio (Y - Center)"
+
+
+class WidthRelative(Config):
+    """
+         Width of the static crop (relative value 0.0–1.0).
+    """
+    name: Literal["widthRelative"] = "widthRelative"
+    value: float = Field(ge=0.0, le=1.0 ,default=0.5)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
+
+    class Config:
+        title = "Crop Ratio (Width)"
+
+
+class HeightRelative(Config):
+    """
+         Height of the static crop (relative value 0.0–1.0).
+    """
+    name: Literal["heightRelative"] = "heightRelative"
+    value: float = Field(ge=0.0, le=1.0 ,default=0.5)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+    placeHolder: Literal["[0.0,1.0]"] = "[0.0, 1.0]"
+
+    class Config:
+        title = "Crop Ratio (Height)"
+
+
+
+class AbsoluteCropInputs(Inputs):
     inputImage: InputImage
 
 
-class PackageConfigs(Configs):
-    degree: Degree
-    drawBBox: KeepSideBBox
+class AbsoluteCropConfigs(Configs):
+    xCenterAbsolute: XCenterAbsolute
+    yCenterAbsolute: YCenterAbsolute
+    widthAbsolute: WidthAbsolute
+    heightAbsolute: HeightAbsolute
 
 
-class PackageOutputs(Outputs):
+class AbsoluteCropOutputs(Outputs):
     outputImage: OutputImage
 
 
-class PackageRequest(Request):
-    inputs: Optional[PackageInputs]
-    configs: PackageConfigs
+class AbsoluteCropRequest(Request):
+    inputs: Optional[AbsoluteCropInputs]
+    configs: AbsoluteCropConfigs
 
     class Config:
         json_schema_extra = {
@@ -108,18 +215,104 @@ class PackageRequest(Request):
         }
 
 
-class PackageResponse(Response):
-    outputs: PackageOutputs
+class AbsoluteCropResponse(Response):
+    outputs: AbsoluteCropOutputs
 
 
-class PackageExecutor(Config):
-    name: Literal["Package"] = "Package"
-    value: Union[PackageRequest, PackageResponse]
+class AbsoluteCropExecutor(Config):
+    name: Literal["AbsoluteCrop"] = "AbsoluteCrop"
+    value: Union[AbsoluteCropRequest, AbsoluteCropResponse]
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
     class Config:
-        title = "Package"
+        title = "AbsoluteCrop"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
+
+
+class DynamicCropInputs(Inputs):
+    inputImage: InputImage
+    inputDetections: InputDetections
+
+
+
+
+class DynamicCropOutputs(Outputs):
+    outputImage: OutputImage
+
+
+class DynamicCropRequest(Request):
+    inputs: Optional[DynamicCropInputs]
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+
+class DynamicCropResponse(Response):
+    outputs: DynamicCropOutputs
+
+
+class DynamicCropExecutor(Config):
+    name: Literal["DynamicCrop"] = "DynamicCrop"
+    value: Union[DynamicCropRequest, DynamicCropResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "DynamicCrop"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
+
+
+
+class RelativeCropInputs(Inputs):
+    inputImage: InputImage
+
+
+class RelativeCropConfigs(Configs):
+    xCenterRelative: XCenterRelative
+    yCenterRelative: YCenterRelative
+    widthRelative: WidthRelative
+    heightRelative: HeightRelative
+
+
+class RelativeCropOutputs(Outputs):
+    outputImage: OutputImage
+
+
+class RelativeCropRequest(Request):
+    inputs: Optional[RelativeCropInputs]
+    configs: RelativeCropConfigs
+
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
+
+class RelativeCropResponse(Response):
+    outputs: RelativeCropOutputs
+
+
+class RelativeCropExecutor(Config):
+    name: Literal["RelativeCrop"] = "RelativeCrop"
+    value: Union[RelativeCropRequest, RelativeCropResponse]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+    class Config:
+        title = "RelativeCrop"
         json_schema_extra = {
             "target": {
                 "value": 0
@@ -129,15 +322,12 @@ class PackageExecutor(Config):
 
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
-    value: Union[PackageExecutor]
+    value: Union[AbsoluteCropExecutor, DynamicCropExecutor, RelativeCropExecutor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
 
     class Config:
         title = "Task"
-        json_schema_extra = {
-            "target": "value"
-        }
 
 
 class PackageConfigs(Configs):
@@ -147,4 +337,4 @@ class PackageConfigs(Configs):
 class PackageModel(Package):
     configs: PackageConfigs
     type: Literal["component"] = "component"
-    name: Literal["Package"] = "Package"
+    name: Literal["Crop"] = "Crop"
