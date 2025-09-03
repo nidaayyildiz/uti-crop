@@ -20,7 +20,6 @@ class DynamicCrop(Component):
     def __init__(self, request, bootstrap):
         super().__init__(request, bootstrap)
         self.request.model = PackageModel(**(self.request.data))
-        self.mask_Opacity = self.request.get_param("KeepSide")
         self.image = self.request.get_param("inputImage")
         self.detections = self.request.get_param("inputDetections")
 
