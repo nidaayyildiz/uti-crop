@@ -61,7 +61,7 @@ class DynamicCrop(Component):
         if not cropped_images:
             cropped_images = [img]
 
-        # Tek görüntü varsa liste olarak döndür
+        # liste olarak döndür
         if len(cropped_images) == 1:
             self.image = cropped_images[0]
         else:
