@@ -25,7 +25,6 @@ def build_response_DynamicCrop(context):
     packageModel = package.build_model(context)
     return packageModel
 
-
 def build_response_RelativeCrop(context):
     outputImage = OutputImage(value=context.image)
     relativeCropOutputs = RelativeCropOutputs(outputImage=outputImage)
